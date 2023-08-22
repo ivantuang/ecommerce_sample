@@ -62,7 +62,7 @@ extension ResponseEx on Response {
   }
 }
 
-class ServerRepository extends GetConnect {
+class ApiBase extends GetConnect {
 
   @override
   void onInit() {
@@ -83,9 +83,9 @@ class ServerRepository extends GetConnect {
     });
   }
 
-  Future<Map?> loadEntityData(
+  Future<Map<String, dynamic>?> loadEntityData(
       String url, {
-        String method = 'POST',
+        String method = 'GET',
         dynamic body,
         String? contentType,
         Map<String, String>? headers,

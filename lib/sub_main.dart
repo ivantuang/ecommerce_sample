@@ -1,3 +1,4 @@
+import 'package:ecommerce_sample/api/api_base.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,8 +25,9 @@ class SubMain {
         defaultTransition: Transition.cupertino
     );
 
-    Get.put(logger, permanent: true);
-    Get.put(logger, permanent: true);
+
+    Get.put(ApiBase(), permanent: true);
+    Get.find<ApiBase>().onInit();
   }
 }
 
