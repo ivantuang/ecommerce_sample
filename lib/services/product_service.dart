@@ -26,4 +26,17 @@ class ProductService {
 
     return productModel;
   }
+
+  Future<ProductListModel?> searchProducts(String query) async {
+    ProductListModel? productListModel;
+
+    final entity = await _apiBase.loadEntityData('/products/search', query: {
+      'q': query
+    });
+    if (entity != null) {
+      productListModel = ProductListModel.fromJson(entity);
+    }
+
+    return productListModel;
+  }
 }

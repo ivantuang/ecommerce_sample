@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 extension FormDataEx on FormData {
   FormData get baseParams {
@@ -93,8 +94,8 @@ class ApiBase extends GetConnect {
         bool showLoading = true,
       }) async {
     try {
-      if (showLoading && Get.overlayContext != null) {
-        // LoadingUtils.showLoading(Get.overlayContext!);
+      if (showLoading && !EasyLoading.isShow) {
+        EasyLoading.show(maskType: EasyLoadingMaskType.black, dismissOnTap: false);
       }
       StringBuffer requestLog = StringBuffer();
 
@@ -137,8 +138,8 @@ class ApiBase extends GetConnect {
           query: query
       );
 
-      if (showLoading && Get.overlayContext != null) {
-        // LoadingUtils.stopLoading(Get.overlayContext!);
+      if (showLoading && EasyLoading.isShow) {
+        EasyLoading.dismiss();
       }
 
       if (response.isOk) {
@@ -160,8 +161,8 @@ class ApiBase extends GetConnect {
       }).logString('Runtime Error');
 
       Get.find<Logger>().wtf(runTimeLog, error: e, stackTrace: s);
-      if (Get.overlayContext != null) {
-        // LoadingUtils.stopLoading(Get.overlayContext!);
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
       }
 
       // return ResponseEntity(success: false, message: Label.parse_error.tr);

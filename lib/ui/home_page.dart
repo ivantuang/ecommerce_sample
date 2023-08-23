@@ -17,6 +17,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +29,46 @@ class _HomePageState extends State<HomePage> {
           return Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
               child: Column(
                 children: [
-                  TextFormField(),
+                  TextFormField(
+                    controller: _searchController,
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                      hintText: 'Search here',
+                      suffixIcon: IconButton(
+                        color: Colors.redAccent,
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          _searchController.clear();
+                          controller.getProductList();
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(width: 2, color: Colors.redAccent),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(width: 2, color: Colors.redAccent),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(width: 2, color: Colors.redAccent),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Colors.black54
+                    ),
+                    onFieldSubmitted: (value) {
+                      controller.searchProducts(value);
+                    },
+                  ),
                   Expanded(
-                    child: MasonryGridView.count(
+                    child: controller.productListLength > 0 ?
+                    MasonryGridView.count(
                       itemCount: controller.productListLength,
                       crossAxisCount: 2,
                       mainAxisSpacing: 8,
@@ -47,7 +84,15 @@ class _HomePageState extends State<HomePage> {
                           },
                         );
                       },
-                    ),
+                    ) :
+                    Center(
+                      child: Text(
+                        'No products found',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Colors.black54
+                        ),
+                      ),
+                    )
                   ),
                 ],
               ),
@@ -77,7 +122,7 @@ class ProductCardWidget extends StatelessWidget {
           children: [
             CachedNetworkImage(
               imageUrl: product.thumbnail ?? '',
-              placeholder: (context, url) => const CircularProgressIndicator(),
+              placeholder: (context, url) => const CircularProgressIndicator(color: Colors.redAccent,),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             Padding(

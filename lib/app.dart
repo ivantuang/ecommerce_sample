@@ -3,6 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 
 import 'app_pages.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class App extends StatefulWidget {
 
@@ -20,6 +21,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         fallbackLocale: const Locale('en'),
         getPages: AppPage.routes,
         initialRoute: AppRoute.homePage,
+        builder: EasyLoading.init(),
       ),
     );
   }
