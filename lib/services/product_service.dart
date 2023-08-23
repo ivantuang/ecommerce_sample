@@ -15,4 +15,15 @@ class ProductService {
 
     return productListModel;
   }
+
+  Future<ProductModel?> getProduct(num productId) async {
+    ProductModel? productModel;
+
+    final entity = await _apiBase.loadEntityData('/products/$productId');
+    if (entity != null) {
+      productModel = ProductModel.fromJson(entity);
+    }
+
+    return productModel;
+  }
 }
